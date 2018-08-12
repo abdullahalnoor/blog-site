@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Post;
+use Session;
 
 class PostController extends Controller
 {
@@ -15,7 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('admin.post.index',[
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -25,6 +29,12 @@ class PostController extends Controller
      */
     public function create()
     {
+        $count = Category::all()->count();
+        // dd($count);
+        if($count == 0){
+            Session::flash('message','Befor creating post you must create category...');
+            return redirect()->route('category.create');
+        }
         return view('admin.post.create')->with('categories',Category::all());
     }
 
@@ -52,10 +62,12 @@ class PostController extends Controller
 
         $post = Post::create([
             'title' => $request->title,
+            'slug' => str_slug($request->title),
             'content' => $request->content,
             'featured' => 'uploads/posts/'.$image,
             'category_id' => $request->category_id,
         ]);
+        return back();
 
     }
 
@@ -101,6 +113,31 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return back();
     }
+
+    public function trashed(){
+        $posts = Post::onlyTrashed()->get();
+         return view('admin.post.trash',[
+            'posts' => $posts
+        ]);
+    
+    }
+
+
+    public function hardDelete($id){
+            $post = Post::withTrashed()->where('id',$id)->first();
+            $post->forceDelete();
+            return back();
+    }
+    public function restore($id){
+        $post = Post::withTrashed()->where('id',$id)->first();
+        $post->restore();
+        return back();
+    }
+
+
+
 }

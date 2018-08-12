@@ -3,10 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
 
 class Post extends Model
 {
-    protected $fillable = ['title','content','featured','category_id'];
+    use softDeletes;
+    protected $fillable = ['title','slug','content','featured','category_id'];
+
+    protected $dates = ['delete_at'];
+
+    public function getFeaturedAttribute($featured){
+        return asset($featured);
+    }
 
     public function category(){
         return $this->belongsTo("App\Category");

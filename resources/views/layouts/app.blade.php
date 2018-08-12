@@ -93,6 +93,12 @@
                             {{-- <a href="/post/create">Crete new Post</a> --}}
                             <a href="{{route('post.create')}}">Create new Post</a>
                         </li>
+                        <li class="list-group-item">
+                            <a href="{{route('posts')}}">view Posts</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{route('post.trashed')}}">view Trashed Posts</a>
+                        </li>
                     </ul>
                 </div>
                 @endif

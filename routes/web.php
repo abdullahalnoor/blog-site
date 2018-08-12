@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix'=> 'admin','middleware'=>'auth'],function(){
+    Route::get('posts',[
+    'uses' => 'PostController@index',
+    'as'  => 'posts'
+    ]);
     Route::get('post/create',[
     'uses' => 'PostController@create',
     'as'  => 'post.create'
@@ -26,6 +30,22 @@ Route::group(['prefix'=> 'admin','middleware'=>'auth'],function(){
     Route::post('post/store',[
         'uses' => 'PostController@store',
         'as'   => 'post.store'
+    ]);
+    Route::get('post/delete/{id}',[
+        'uses' => 'PostController@destroy',
+        'as'   => 'post.delete'
+    ]);
+    Route::get('post/restore/{id}',[
+        'uses' => 'PostController@restore',
+        'as'   => 'post.restore'
+    ]);
+    Route::get('post/hard-delete/{id}',[
+        'uses' => 'PostController@hardDelete',
+        'as'   => 'post.hard-delete'
+    ]);
+    Route::get('post/trashed',[
+        'uses' => 'PostController@trashed',
+        'as'   => 'post.trashed'
     ]);
     Route::get('/category/create',[
         'uses' => 'CategoryController@create',

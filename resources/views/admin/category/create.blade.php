@@ -6,7 +6,11 @@
     Create a new Category
   </div>
   <div class="card-body">
-    {{--
+    @if( Session::has('message'))
+    <h4>
+      {{ Session::get('message') }}
+    </h4>
+    @endif {{--
     <form action="/post/store" method="POST" enctype="multipart/form-data"> --}}
       <form action="{{route('category.store')}}" method="POST">
         @csrf
