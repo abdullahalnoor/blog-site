@@ -11,9 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('frontend.welcome');
+// });
+
+ Route::get('/',[
+    'uses' => 'WelcomeController@index',
+    'as'  => 'index'
+    ]);
+ Route::get('/single/{id}',[
+    'uses' => 'WelcomeController@detailPaage',
+    'as'  => 'detail.page'
+    ]);
+
+
+
 
 Auth::routes();
 
@@ -51,6 +63,27 @@ Route::group(['prefix'=> 'admin','middleware'=>'auth'],function(){
         'uses' => 'CategoryController@create',
         'as' => 'category.create'
     ]);
+    Route::get('post/edit/{id}',[
+        'uses' => 'PostController@edit',
+        'as'   => 'post.edit'
+    ]);
+    Route::post('post/update',[
+        'uses' => 'PostController@update',
+        'as'   => 'post.update'
+    ]);
+
+    // Tag
+
+    Route::get('tag/create',[
+        'uses' => 'TagController@create',
+        'as'   => 'tag.create'
+    ]);
+    Route::post('tag/store',[
+        'uses' => 'TagController@store',
+        'as'   => 'tag.store'
+    ]);
+    // cateegory
+
     Route::get('categories',[
         'uses' => 'CategoryController@index',
         'as'   => 'categories'
@@ -58,5 +91,36 @@ Route::group(['prefix'=> 'admin','middleware'=>'auth'],function(){
     Route::post('category/store',[
         'uses' => 'CategoryController@store',
         'as'   => 'category.store'
+    ]);
+    
+    // user
+    Route::get('users',[
+        'uses' => 'UserController@inedx',
+        'as'   => 'users'
+    ]);
+    Route::get('user/create',[
+        'uses' => 'UserController@create',
+        'as'   => 'user.create'
+    ]);
+    Route::post('user/store',[
+        'uses' => 'UserController@store',
+        'as'   => 'user.store'
+    ]);
+     Route::get('make/admin/{id}',[
+        'uses' => 'UserController@makeAdmin',
+        'as'   => 'make.admin'
+    ]);
+     Route::get('remove/admin/{id}',[
+        'uses' => 'UserController@removeAdmin',
+        'as'   => 'remove.admin'
+    ]);
+    // setting 
+    Route::get('view/setting',[
+        'uses' => 'SettingController@viewSetting',
+        'as'   => 'view.setting'
+    ]);
+     Route::post('update/setting',[
+        'uses' => 'SettingController@updateSetting',
+        'as'   => 'update.setting'
     ]);
 });

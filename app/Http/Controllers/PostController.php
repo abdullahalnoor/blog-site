@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Tag;
 use App\Post;
 use Session;
 
@@ -35,7 +36,10 @@ class PostController extends Controller
             Session::flash('message','Befor creating post you must create category...');
             return redirect()->route('category.create');
         }
-        return view('admin.post.create')->with('categories',Category::all());
+        return view('admin.post.create')
+        ->with('categories',Category::all())
+        ->with('tags',Tag::all())
+        ;
     }
 
     /**
@@ -67,6 +71,7 @@ class PostController extends Controller
             'featured' => 'uploads/posts/'.$image,
             'category_id' => $request->category_id,
         ]);
+        $post->tags()->attach($request->tags);
         return back();
 
     }
@@ -90,7 +95,14 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+         return view('admin.post.edit',[
+            'post' => $post,
+            'categories' => $categories,
+            'tags' => $tags,
+        ]);
     }
 
     /**
@@ -100,9 +112,28 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+         $post = Post::find($request->id);
+         if($request->hasFile('featured')){
+            @unlink($post->featured);
+            $featured = $request->featured;
+            $image = time().$featured->getClientOriginalName();
+
+            $featured->move('uploads/posts',$image);
+            $post->featured = 'uploads/posts/'.$image;
+         }
+
+       
+           $post->title = $request->title;
+            $post->slug = str_slug($request->title);
+            $post->content = $request->content;
+            $post->category_id  = $request->category_id;
+             $post->save();
+
+             $post->tags()->sync($request->tags);
+        
+        return back();
     }
 
     /**

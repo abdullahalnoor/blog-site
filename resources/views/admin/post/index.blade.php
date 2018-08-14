@@ -24,7 +24,8 @@
           <td> {{ $item->slug }} </td>
           <td> <img src="{{ $item->featured }}" alt="{{ $item->title }}" style="width:50px; height:50ps"></td>
           <td>
-            <a href="{{route('post.delete',['id'=> $item->id])}}" class="btn btn-warning">Trash</a>
+            <a href="{{route('post.delete',['id'=> $item->id])}}" class="btn btn-warning">Trash</a> <a href="{{route('post.edit',['id'=> $item->id])}}"
+              class="btn btn-info">Edit</a>
           </td>
         </tr>
         @endforeach

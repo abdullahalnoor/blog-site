@@ -34,6 +34,13 @@
           </select>
         </div>
         <div class="form-group">
+          @foreach ($tags as $item)
+          <div class="checkbox">'
+            <label for=""> <input type="checkbox" name="tags[]" value="{{$item->id}}">  {{$item->tag}} </label>
+          </div>
+          @endforeach
+        </div>
+        <div class="form-group">
           <label for="featured" class="text-capitalize font-weight-bold">featured image</label>
           <input type="file" class="form-control" name="featured"> @if($errors->has('featured'))
           <span class="text-danger font-weight-bold">

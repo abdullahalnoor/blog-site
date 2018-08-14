@@ -83,11 +83,23 @@
                             {{-- <a href="/home">Home</a> --}}
                             <a href="{{route('home')}}">Home</a>
                         </li>
+                        @if(Auth::user()->admin)
+                        <li class="list-group-item">
+                            {{-- <a href="/home">Home</a> --}}
+                            <a href="{{route('users')}}">Users</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{route('view.setting')}}">Settings</a>
+                        </li>
+                        @endif
                         <li class="list-group-item">
                             <a href="{{route('categories')}}">view categories</a>
                         </li>
                         <li class="list-group-item">
                             <a href="{{route('category.create')}}">Create new Category</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{route('tag.create')}}">Create new a Tag</a>
                         </li>
                         <li class="list-group-item">
                             {{-- <a href="/post/create">Crete new Post</a> --}}
